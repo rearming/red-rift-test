@@ -39,7 +39,11 @@ namespace View
 		public void Reposition(IList<Card> cards)
 		{
 			List<(Vector3 pos, Quaternion rotation)> layout = Calculate(cards.Count);
-			cards.ForEach((c, i) => c.Controller.Reposition(layout[i].pos, layout[i].rotation, repositionDuration));
+			cards.ForEach((card, i) =>
+			{
+				card.UIView.Root.transform.SetSiblingIndex(i);
+				card.Controller.Reposition(layout[i].pos, layout[i].rotation, repositionDuration);
+			});
 		}
 
 		[Button]

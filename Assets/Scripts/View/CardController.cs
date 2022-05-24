@@ -11,7 +11,8 @@ namespace View
 	public class CardController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 	{
 		[Header("Settings")]
-		[SerializeField] private float moveSpeed = 0.3f;
+		[SerializeField] private float moveSpeed = 30f;
+		[SerializeField] private float rotationSpeed = 30f;
 
 		[Header("Debug")]
 		[SerializeField] private bool debug;
@@ -84,7 +85,7 @@ namespace View
 				_uiView.GameObject.SetActive(false);
 				
 				ControlledTransform = _tableView.Root.transform;
-				ControlledTransform.position = Vector3.Lerp(ControlledTransform.position, pos.Value, Time.deltaTime * moveSpeed);;
+				ControlledTransform.position = Vector3.Lerp(ControlledTransform.position, pos.Value, Time.deltaTime * rotationSpeed);
 				CardMovedToTable?.Invoke();
 			}
 			else
@@ -99,6 +100,7 @@ namespace View
 						transform.position = pos.Value;
 					ControlledTransform = transform;
 					ControlledTransform.position = Vector3.Lerp(ControlledTransform.position, pos.Value, Time.deltaTime * moveSpeed);
+					ControlledTransform.rotation = Quaternion.Slerp(ControlledTransform.rotation, Quaternion.identity, Time.deltaTime * rotationSpeed);
 					CardMovedFromTable?.Invoke();
 				}
 			}

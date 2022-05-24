@@ -71,7 +71,7 @@ MonoBehaviour:
   uiViewParent: {fileID: 0}
   cardImageURL: https://picsum.photos/250/200
   minCardCount: 4
-  maxCardCount: 8
+  maxCardCount: 6
 --- !u!114 &653000678340665265
 MonoBehaviour:
   m_ObjectHideFlags: 0

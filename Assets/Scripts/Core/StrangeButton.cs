@@ -16,7 +16,11 @@ namespace Core
 		{
 			GetComponent<Button>().onClick.AddListener(() =>
 			{
-				Hand.Instance[_currentCardIdx].ChangeRandomField((int)Random.Range(minChange, (float)maxChange));
+				if (Hand.Instance.CardsInHand.Count == 0)
+					return;
+				
+				Hand.Instance.CardsInHand[_currentCardIdx % Hand.Instance.CardsInHand.Count]
+					.ChangeRandomField((int)Random.Range(minChange, (float)maxChange));
 				_currentCardIdx++;
 			});
 		}

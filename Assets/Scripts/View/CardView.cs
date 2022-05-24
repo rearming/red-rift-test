@@ -17,9 +17,9 @@ namespace View
 		
 		[SerializeField] private TextMeshProUGUI title;
 		[SerializeField] private TextMeshProUGUI description;
-		[SerializeField] private TextMeshProUGUI manaValue;
-		[SerializeField] private TextMeshProUGUI attackValue;
-		[SerializeField] private TextMeshProUGUI hpValue;
+		[SerializeField] private CardValue manaValue;
+		[SerializeField] private CardValue attackValue;
+		[SerializeField] private CardValue hpValue;
 
 		public Image Art => art;
 		public GameObject GameObject => gameObject;
@@ -30,9 +30,9 @@ namespace View
 		{
 			model.Title.ValueChanged += newValue => title.text = newValue;
 			model.Description.ValueChanged += newValue => description.text = newValue;
-			model.ManaValue.ValueChanged += newValue => manaValue.text = newValue.ToString();
-			model.AttackValue.ValueChanged += newValue => attackValue.text = newValue.ToString();
-			model.HpValue.ValueChanged += newValue => hpValue.text = newValue.ToString();
+			model.ManaValue.ValueChanged += newValue => manaValue.Set(newValue.ToString());
+			model.AttackValue.ValueChanged += newValue => attackValue.Set(newValue.ToString());
+			model.HpValue.ValueChanged += newValue => hpValue.Set(newValue.ToString());
 		}
 	}
 }
