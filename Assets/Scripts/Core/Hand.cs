@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using UnityEngine;
@@ -69,10 +69,14 @@ namespace Core
 			CalculateLayout();
 		}
 
+		private void Update()
+		{
+			CalculateLayout();
+		}
+
 		private void CalculateLayout()
 		{
-			List<(Vector3 pos, Quaternion rotation)> layout = _cardLayout.Calculate(_cards.Count);
-			_cards.ForEach((c, i) => c.View.Refresh(layout[i].pos, layout[i].rotation));
+			_cardLayout.Reposition(_cards.Where(card => card.UIView.GameObject.activeSelf).ToArray());
 		}
 	}
 }

@@ -12,14 +12,22 @@ namespace Core
 		public BindableField<int> ManaValue { get; } = new();
 		public BindableField<int> AttackValue { get; } = new();
 		public BindableField<int> HpValue { get; } = new();
+		
+		public ICardView UIView { get; }
+		public ICardView TableView { get; }
 
-		public CardView View { get; }
+		public CardController Controller { get; }
 
-		public Card(CardView view)
+		public Card(ICardView uiView, ICardView tableView, CardController controller)
 		{
-			View = view;
-			View.Init(this);
-
+			UIView = uiView;
+			TableView = tableView;
+			Controller = controller;
+			
+			UIView.Init(this);
+			TableView.Init(this);
+			Controller.Init(this, uiView, TableView);
+			
 			HpValue.ValueChanged += hp =>
 			{
 				if (hp <= 0)
@@ -45,7 +53,8 @@ namespace Core
 
 		public void Dispose()
 		{
-			Object.Destroy(View.gameObject);
+			Object.Destroy(UIView.Root);
+			Object.Destroy(TableView.Root);
 			GC.SuppressFinalize(this);
 		}
 	}

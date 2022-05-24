@@ -1,16 +1,25 @@
 ﻿using System.Collections.Generic;
+using Core;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using UnityEngine;
+using Utils;
 
 namespace View
 {
-	public class CardLayout : MonoBehaviour
+	public class CardLayout : Singleton<CardLayout>
 	{
+		[Header("Position")]
+		
 		[SerializeField] private Transform arcTransform;
 		[SerializeField] private float baseArcRadius;
 		[SerializeField] private AnimationCurve arcLengthByCardNum;
 
 		[SerializeField] private float angleCorrection;
+		
+		[Header("Animation")]
+		[SerializeField] private float repositionDuration = 0.5f;
+		[SerializeField] private float returnToHandDuration = 1f;
 
 		[Header("Debug")]
 		[SerializeField] private bool debug;
@@ -19,9 +28,18 @@ namespace View
 		private float _arcRadius;
 		private float _arcLength;
 
-		private void Awake()
+		public float ReturnToHandDuration => returnToHandDuration;
+
+		protected override void Awake()
 		{
+			base.Awake();
 			_ui = FindObjectOfType<Canvas>();
+		}
+
+		public void Reposition(IList<Card> cards)
+		{
+			List<(Vector3 pos, Quaternion rotation)> layout = Calculate(cards.Count);
+			cards.ForEach((c, i) => c.Controller.Reposition(layout[i].pos, layout[i].rotation, repositionDuration));
 		}
 
 		[Button]

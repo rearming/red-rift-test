@@ -1,16 +1,16 @@
 ﻿using Core;
-using DG.Tweening;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace View
 {
-	
-	public class CardView : MonoBehaviour
+	public class CardView : MonoBehaviour, ICardView
 	{
+		[Header("Refs")]
+		[SerializeField] private GameObject root;
+		[SerializeField] private CardController controller;
+		
 		[Header("View")]
 		[SerializeField] private Image background;
 		[SerializeField] private Image art;
@@ -21,13 +21,10 @@ namespace View
 		[SerializeField] private TextMeshProUGUI attackValue;
 		[SerializeField] private TextMeshProUGUI hpValue;
 
-		[Header("Animation")]
-		[SerializeField] private float tweenDuration = 0.5f;
-		
-		private TweenerCore<Vector3, Vector3, VectorOptions> _posTweener;
-		private TweenerCore<Quaternion, Quaternion, NoOptions> _rotTweener;
-
 		public Image Art => art;
+		public GameObject GameObject => gameObject;
+		public GameObject Root => root;
+		public CardController Controller => controller;
 
 		public void Init(Card model)
 		{
@@ -36,20 +33,6 @@ namespace View
 			model.ManaValue.ValueChanged += newValue => manaValue.text = newValue.ToString();
 			model.AttackValue.ValueChanged += newValue => attackValue.text = newValue.ToString();
 			model.HpValue.ValueChanged += newValue => hpValue.text = newValue.ToString();
-
-			StartCoroutine(CardFactory.Instance.GetArt(this));
-		}
-
-		public void Refresh(Vector3 newPos, Quaternion newRot)
-		{
-			_posTweener = transform.DOMove(newPos, tweenDuration);
-			_rotTweener = transform.DORotateQuaternion(newRot, tweenDuration);
-		}
-
-		public void MoveToTable()
-		{
-			_posTweener.Goto(1);
-			_rotTweener.Goto(1);
 		}
 	}
 }
